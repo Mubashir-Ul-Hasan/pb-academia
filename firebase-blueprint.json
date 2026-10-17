@@ -1,0 +1,257 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile containing role and metadata",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "schoolName": { "type": "string" },
+        "mobileNumber": { "type": "string" },
+        "class": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "Educational course offered by the academy",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "teacherId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "price", "teacherId"]
+    },
+    "Exam": {
+      "title": "Exam",
+      "description": "An exam created by a teacher for QuizBlust or other courses",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "courseId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "examType": { "type": "string", "enum": ["CQ", "MCQ"] },
+        "questionUrl": { "type": "string", "description": "URL to PDF/Image for CQ" },
+        "googleFormLink": { "type": "string", "description": "Link for MCQ" },
+        "startTime": { "type": "string", "format": "date-time" },
+        "durationMinutes": { "type": "number" },
+        "status": { "type": "string", "enum": ["scheduled", "live", "completed"] },
+        "resultsReleased": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "courseId", "teacherId", "examType", "startTime", "durationMinutes"]
+    },
+    "ExamSubmission": {
+      "title": "ExamSubmission",
+      "description": "A student's submission for an exam",
+      "type": "object",
+      "properties": {
+        "examId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "ansUrl": { "type": "string", "description": "PDF URL for CQ submission" },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "marks": { "type": "number" },
+        "feedback": { "type": "string" },
+        "graded": { "type": "boolean" }
+      },
+      "required": ["examId", "studentId", "submittedAt"]
+    },
+    "QuizBlustRegistration": {
+      "title": "QuizBlustRegistration",
+      "description": "Registration for the free QuizBlust course",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "registeredAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Attendance record for a class or session",
+      "type": "object",
+      "properties": {
+        "courseId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "presentStudents": { "type": "array" },
+        "notes": { "type": "string" }
+      },
+      "required": ["courseId", "date"]
+    },
+    "Material": {
+      "title": "Material",
+      "description": "Study material or assignment uploaded by teacher",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "courseId": { "type": "string" },
+        "fileUrl": { "type": "string" },
+        "fileType": { "type": "string" },
+        "uploadedBy": { "type": "string" },
+        "uploadedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "courseId", "fileUrl"]
+    },
+    "Assignment": {
+      "title": "Assignment",
+      "description": "A homework task or project assigned by a teacher",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "courseId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "dueDate": { "type": "string", "format": "date-time" },
+        "fileUrl": { "type": "string" },
+        "fileType": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "courseId", "teacherId", "dueDate"]
+    },
+    "AssignmentSubmission": {
+      "title": "AssignmentSubmission",
+      "description": "A student's submission for an assignment",
+      "type": "object",
+      "properties": {
+        "assignmentId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "fileUrl": { "type": "string" },
+        "fileType": { "type": "string" },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "grade": { "type": "number" },
+        "feedback": { "type": "string" }
+      },
+      "required": ["assignmentId", "studentId", "fileUrl"]
+    },
+    "TeacherCredential": {
+      "title": "TeacherCredential",
+      "description": "Security credentials for teachers managed by admin",
+      "type": "object",
+      "properties": {
+        "password": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["password"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "A question asked by a student in the Q/A section",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "subject": { "type": "string" },
+        "text": { "type": "string" },
+        "audioUrl": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "aiRequested": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["open", "answered"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "subject", "status"]
+    },
+    "Reply": {
+      "title": "Reply",
+      "description": "A reply to a question",
+      "type": "object",
+      "properties": {
+        "questionId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderRole": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["questionId", "senderId", "senderRole", "text"]
+    },
+    "VideoClass": {
+      "title": "VideoClass",
+      "description": "A YouTube video class uploaded by a teacher",
+      "type": "object",
+      "properties": {
+        "teacherId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "subject": { "type": "string" },
+        "title": { "type": "string" },
+        "youtubeUrl": { "type": "string" },
+        "classLevel": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["teacherId", "courseId", "subject", "title", "youtubeUrl", "classLevel"]
+    },
+    "Enrollment": {
+      "title": "Enrollment",
+      "description": "A student's enrollment in a course",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "enrolledAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "courseId", "enrolledAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/teacher_credentials/{teacherId}": {
+      "schema": "TeacherCredential",
+      "description": "Secure teacher login credentials"
+    },
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Available courses"
+    },
+    "/exams/{examId}": {
+      "schema": "Exam",
+      "description": "Exams for courses/QuizBlust"
+    },
+    "/examSubmissions/{submissionId}": {
+      "schema": "ExamSubmission",
+      "description": "Student exam submissions"
+    },
+    "/quizblust_registrations/{regId}": {
+      "schema": "QuizBlustRegistration",
+      "description": "QuizBlust course registrations"
+    },
+    "/attendance/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Class attendance records"
+    },
+    "/materials/{materialId}": {
+      "schema": "Material",
+      "description": "Course materials"
+    },
+    "/assignments/{assignmentId}": {
+      "schema": "Assignment",
+      "description": "Assignments and homework"
+    },
+    "/assignmentSubmissions/{submissionId}": {
+      "schema": "AssignmentSubmission",
+      "description": "Student assignment submissions"
+    },
+    "/questions/{questionId}": {
+      "schema": "Question",
+      "description": "Student Q/A questions"
+    },
+    "/replies/{replyId}": {
+      "schema": "Reply",
+      "description": "Replies to questions"
+    },
+    "/videoClasses/{videoId}": {
+      "schema": "VideoClass",
+      "description": "YouTube video classes"
+    },
+    "/enrollments/{enrollmentId}": {
+      "schema": "Enrollment",
+      "description": "Course enrollments"
+    }
+  }
+}
